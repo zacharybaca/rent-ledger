@@ -1,8 +1,6 @@
-# 🚀 MERN Stack Starter Template (Vite + Express)
+# 🚀 RentLedger
 
-A production-ready **MERN (MongoDB, Express, React, Node.js)** starter template designed for scalability and developer experience.
-
-Monorepo structure with a single-command startup, pre-configured CORS + Vite proxy, JWT cookie auth, Socket.IO, Cloudinary avatar uploads, and email via Nodemailer — all wired up and ready to customize.
+RentLedger is a multi-tenant property management and billing platform built with MongoDB, Express, React, and Node.js. The system implements a shared-database architecture, utilizing custom request interceptors (x-tenant-id) and back-end middleware to enforce strict data isolation between property management organizations. Features include role-specific operational portals (LandlordAdmin and Renter), property and unit tracking, lease management, and secure payment gateway integration for automated rent collection and ledger reconciliation.
 
 ---
 
