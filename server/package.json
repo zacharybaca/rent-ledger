@@ -1,5 +1,5 @@
 {
-  "name": "react-starter-template-server",
+  "name": "rentledger-server",
   "version": "1.0.0",
   "main": "server.js",
   "type": "module",
@@ -13,11 +13,11 @@
     "mern",
     "backend",
     "express",
-    "react-starter-template"
+    "rentledger"
   ],
   "author": "Zachary Baca",
   "license": "ISC",
-  "description": "Backend API for React Starter Template",
+  "description": "Backend API for RentLedger",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.0",
@@ -30,14 +30,14 @@
     "express-validator": "^7.0.1",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "leo-profanity": "^1.9.0",
     "mongoose": "^8.4.0",
     "mongoose-paginate-v2": "^1.9.4",
     "morgan": "^1.10.1",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^8.0.2",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "stripe": "^17.7.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.1.10",
