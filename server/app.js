@@ -5,7 +5,7 @@ import helmet from "helmet";
 import pinoHttp from "pino-http";
 import rateLimit from "express-rate-limit";
 import { RedisStore } from "rate-limit-redis";
-import { createClient } from "ioredis";
+import Redis from "ioredis";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV !== "test") {
 // Redis client for distributed rate limiting (falls back to memory store if REDIS_URL is unset)
 let redisClient;
 if (process.env.REDIS_URL) {
-  redisClient = new createClient(process.env.REDIS_URL);
+  redisClient = new Redis(process.env.REDIS_URL);
   redisClient.on("error", (err) => logger.error({ err }, "Redis client error"));
 }
 

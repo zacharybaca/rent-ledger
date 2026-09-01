@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import argon2 from "argon2";
+import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
 const userSchema = new mongoose.Schema(
@@ -39,8 +40,18 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Compare entered password against stored hash
+// Compare entered password against stored hash (supports legacy bcrypt and current argon2)
 userSchema.methods.matchPassword = async function (enteredPassword) {
+  // Bcrypt hashes start with "$2b$" or "$2a$"
+  if (this.password.startsWith("$2b$") || this.password.startsWith("$2a$")) {
+    const isMatch = await bcrypt.compare(enteredPassword, this.password);
+    if (isMatch) {
+      // Re-hash with argon2 on successful login for seamless migration
+      this.password = await argon2.hash(enteredPassword);
+      await this.save();
+    }
+    return isMatch;
+  }
   return await argon2.verify(this.password, enteredPassword);
 };
 

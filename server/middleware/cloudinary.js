@@ -36,6 +36,7 @@ export const handleUpload = (fieldName) => async (req, res, next) => {
     });
 
     let uploadError = null;
+    let uploadPromise = null;
 
     bb.on("file", (name, stream, info) => {
       if (name !== fieldName) {
@@ -50,28 +51,40 @@ export const handleUpload = (fieldName) => async (req, res, next) => {
         return;
       }
 
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: "avatar_uploads", resource_type: "image" },
-        (err, result) => {
-          if (err) {
-            uploadError = err;
-          } else {
-            req.uploadedFile = { url: result.secure_url, publicId: result.public_id };
-          }
-        },
-      );
+      uploadPromise = new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "avatar_uploads", resource_type: "image" },
+          (err, result) => {
+            if (err) {
+              reject(err);
+            } else {
+              req.uploadedFile = { url: result.secure_url, publicId: result.public_id };
+              resolve();
+            }
+          },
+        );
 
-      stream.on("limit", () => {
-        uploadError = Object.assign(new Error("File too large. Maximum size is 5 MB."), { status: 413 });
+        stream.on("limit", () => {
+          const err = Object.assign(new Error("File too large. Maximum size is 5 MB."), { status: 413 });
+          reject(err);
+        });
+
+        stream.pipe(uploadStream);
       });
-
-      stream.pipe(uploadStream);
     });
 
-    bb.on("finish", () => {
+    bb.on("finish", async () => {
       if (uploadError) {
         res.status(uploadError.status || 500);
         return next(uploadError);
+      }
+      if (uploadPromise) {
+        try {
+          await uploadPromise;
+        } catch (err) {
+          res.status(err.status || 500);
+          return next(err);
+        }
       }
       next();
     });
