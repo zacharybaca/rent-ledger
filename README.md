@@ -60,7 +60,7 @@ Optional server variables:
 - `PORT` (default `5000`)
 - `NODE_ENV`
 - `CLIENT_URL`
-- `FRONTEND_URL` (used in password reset email links)
+- `FRONTEND_URL` (**required** for the password reset feature — used to build the reset link in emails; defaults to `http://localhost:5173` if not set)
 - `REDIS_URL` (enables distributed rate limiting)
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `FROM_NAME`, `FROM_EMAIL`
 - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`
