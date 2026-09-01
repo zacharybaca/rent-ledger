@@ -2,11 +2,14 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
-import morgan from "morgan";
+import pinoHttp from "pino-http";
 import rateLimit from "express-rate-limit";
+import { RedisStore } from "rate-limit-redis";
+import { createClient } from "ioredis";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import logger from "./utils/logger.js";
 
 const app = express();
 
@@ -26,10 +29,22 @@ app.use(helmet());
 // and rate-limit (429) responses both carry the required Access-Control-* headers.
 app.use(cors(corsOptions));
 
-// Request logging (skip in test environment)
+// Structured HTTP request logging (skip in test environment)
 if (process.env.NODE_ENV !== "test") {
-  app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
+  app.use(pinoHttp({ logger }));
 }
+
+// Redis client for distributed rate limiting (falls back to memory store if REDIS_URL is unset)
+let redisClient;
+if (process.env.REDIS_URL) {
+  redisClient = new createClient(process.env.REDIS_URL);
+  redisClient.on("error", (err) => logger.error({ err }, "Redis client error"));
+}
+
+const makeRateLimitStore = () =>
+  redisClient
+    ? new RedisStore({ sendCommand: (...args) => redisClient.call(...args) })
+    : undefined; // undefined → in-memory default
 
 // General API rate limiter — 100 req / 15 min per IP
 const apiLimiter = rateLimit({
@@ -37,6 +52,7 @@ const apiLimiter = rateLimit({
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
+  store: makeRateLimitStore(),
   message: { message: "Too many requests, please try again later." },
 });
 app.use("/api", apiLimiter);
@@ -47,6 +63,7 @@ const authLimiter = rateLimit({
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
+  store: makeRateLimitStore(),
   message: {
     message: "Too many authentication attempts, please try again later.",
   },

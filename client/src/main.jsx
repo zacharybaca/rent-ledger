@@ -5,7 +5,6 @@ import { ClerkProvider } from '@clerk/react-router';
 import { AppProvider } from './contexts/AppProvider.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'modern-normalize';
 import './index.css';
 
 import App from './App.jsx';

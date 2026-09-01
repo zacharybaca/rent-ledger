@@ -1,5 +1,4 @@
 import leoProfanity from "leo-profanity";
-import asyncHandler from "express-async-handler";
 
 // Initialize default English dictionary
 leoProfanity.loadDictionary("en");
@@ -52,7 +51,7 @@ leoProfanity.add([
   "embezzler",
 ]);
 
-export const moderateContent = asyncHandler(async (req, res, next) => {
+export const moderateContent = async (req, res, next) => {
   // Expanded to include 'title' and 'content' for Knowledge Base Articles
   const fieldsToMatch = [
     req.body.title,
@@ -79,4 +78,4 @@ export const moderateContent = asyncHandler(async (req, res, next) => {
   }
 
   next();
-});
+};

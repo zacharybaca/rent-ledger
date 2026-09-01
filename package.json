@@ -23,10 +23,10 @@
   "author": "Zachary Baca",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^9.0.0"
+    "concurrently": "^9.0.0",
+    "prettier": "^3.8.3"
   },
   "dependencies": {
-    "prettier": "^3.8.3",
     "rimraf": "^6.1.3"
   }
 }

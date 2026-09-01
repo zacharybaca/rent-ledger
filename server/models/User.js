@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import crypto from "crypto";
 
 const userSchema = new mongoose.Schema(
@@ -35,14 +35,13 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = await argon2.hash(this.password);
   next();
 });
 
 // Compare entered password against stored hash
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return await argon2.verify(this.password, enteredPassword);
 };
 
 // Generate a short-lived password reset token

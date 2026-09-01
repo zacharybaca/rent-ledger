@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
-import asyncHandler from "express-async-handler";
 import User from "../models/User.js";
 
-const protect = asyncHandler(async (req, res, next) => {
+const protect = async (req, res, next) => {
   // JWT is issued as an httpOnly cookie during login.
   let token = req.cookies.jwt;
 
@@ -27,7 +26,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
   res.status(401);
   throw new Error("Not authorized, no token");
-});
+};
 
 // For strictly Admin-only routes
 const admin = (req, res, next) => {
