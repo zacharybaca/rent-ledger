@@ -89,7 +89,7 @@ const forgotPassword = async (req, res) => {
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
 
-  const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+  const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/resetpassword/${resetToken}`;
 
   const message = `
     You are receiving this email because you (or someone else) requested a password reset.
