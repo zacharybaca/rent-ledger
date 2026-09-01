@@ -1,10 +1,9 @@
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
 import sendEmail from "../utils/sendEmail.js";
-import asyncHandler from "express-async-handler";
 import crypto from "crypto";
 
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = async (req, res) => {
   const { name, username, email, password } = req.body;
 
   const userExists = await User.findOne({ $or: [{ email }, { username }] });
@@ -28,9 +27,9 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid user data");
   }
-});
+};
 
-const isUserAdmin = asyncHandler(async (req, res) => {
+const isUserAdmin = async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -39,9 +38,9 @@ const isUserAdmin = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User not found");
   }
-});
+};
 
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, username, password } = req.body;
   // Support login by either email or username, and accept both when provided.
   const user = await User.findOne(
@@ -64,9 +63,9 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid email or password");
   }
-});
+};
 
-const logoutUser = asyncHandler(async (req, res) => {
+const logoutUser = async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -74,12 +73,12 @@ const logoutUser = asyncHandler(async (req, res) => {
     expires: new Date(0),
   });
   res.status(200).json({ message: "User logged out" });
-});
+};
 
 // @desc    Forgot password — sends a reset link via email
 // @route   POST /api/auth/forgotpassword
 // @access  Public
-const forgotPassword = asyncHandler(async (req, res) => {
+const forgotPassword = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
@@ -117,12 +116,12 @@ const forgotPassword = asyncHandler(async (req, res) => {
     res.status(500);
     throw new Error("Email could not be sent. Please try again later.");
   }
-});
+};
 
 // @desc    Reset password
 // @route   PUT /api/auth/resetpassword/:resettoken
 // @access  Public
-const resetPassword = asyncHandler(async (req, res) => {
+const resetPassword = async (req, res) => {
   // The token stored in DB is hashed, so hash the incoming raw token before lookup.
   const resetPasswordToken = crypto
     .createHash("sha256")
@@ -156,7 +155,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     success: true,
     message: "Password reset successful. You are now logged in.",
   });
-});
+};
 
 export {
   registerUser,

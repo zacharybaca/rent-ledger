@@ -21,7 +21,6 @@
     "@stripe/stripe-js": "^5.6.0",
     "bootstrap": "^5.3.3",
     "lucide-react": "^1.14.0",
-    "modern-normalize": "^2.0.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.0",
@@ -29,7 +28,7 @@
     "react-router-dom": "^7.0.0",
     "react-toastify": "^10.0.0",
     "socket.io-client": "^4.8.3",
-    "uuid": "^11.1.0"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

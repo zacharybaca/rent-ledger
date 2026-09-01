@@ -12,10 +12,10 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-// Helper: run asyncHandler-wrapped middleware and collect the next() argument
+// Helper: run async middleware and collect either the next() argument or a thrown error
 const runMiddleware = (fn, req, res) =>
   new Promise((resolve) => {
-    fn(req, res, (err) => resolve(err));
+    Promise.resolve(fn(req, res, (err) => resolve(err))).catch(resolve);
   });
 
 describe("protect middleware", () => {
