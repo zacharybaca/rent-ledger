@@ -10,10 +10,10 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
-            MERN<span className="logo-accent">Starter</span>
+            Rent<span className="logo-accent">Ledger</span>
           </Link>
           <p className="footer-tagline">
-            A modern, production-ready React + Express starter template.
+            Property Management, Perfectly Balanced
           </p>
         </div>
 
@@ -31,7 +31,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {currentYear} MERN Starter. All rights reserved.</p>
+        <p>&copy; {currentYear} RentLedger. All rights reserved.</p>
         <div className="footer-legal">
           <span>Built with the MERN Stack</span>
         </div>
