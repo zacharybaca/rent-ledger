@@ -1,5 +1,7 @@
 import express from "express";
-import { body, validationResult } from "express-validator";
+import { z } from "zod";
+import { validate } from "../middleware/validate.js";
+import { protect } from "../middleware/authMiddleware.js";
 import {
   loginUser,
   registerUser,
@@ -8,82 +10,61 @@ import {
   forgotPassword,
   resetPassword,
 } from "../controllers/authController.js";
-import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Returns the first validation error as a 422 response
-const validate = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    res.status(422);
-    return res.json({ message: errors.array()[0].msg });
-  }
-  next();
-};
-
-const registerValidators = [
-  body("name").trim().notEmpty().withMessage("Name is required"),
-  body("username")
-    .trim()
-    .notEmpty()
-    .withMessage("Username is required")
-    .isLength({ min: 3, max: 30 })
-    .withMessage("Username must be 3–30 characters")
-    .matches(/^[a-zA-Z0-9_]+$/)
-    .withMessage("Username may only contain letters, numbers, and underscores"),
-  body("email")
-    .trim()
-    .notEmpty()
-    .withMessage("Email is required")
-    .isEmail()
-    .withMessage("Please enter a valid email address")
-    .normalizeEmail(),
-  body("password")
-    .notEmpty()
-    .withMessage("Password is required")
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 8 characters"),
-];
-
-const loginValidators = [
-  body("email")
-    .optional({ checkFalsy: true })
-    .trim()
-
-    .isEmail()
-    .withMessage("Please enter a valid email address")
-
-    .normalizeEmail(),
-
-  body("username")
-    .optional({ checkFalsy: true })
-
-    .trim()
-
-    .isLength({ min: 3, max: 30 })
-
-    .withMessage("Username must be 3–30 characters")
-
-    .matches(/^[a-zA-Z0-9_]+$/)
-
-    .withMessage("Username may only contain letters, numbers, and underscores"),
-
-  body().custom((_, { req }) => {
-    if (!req.body.email && !req.body.username) {
-      throw new Error("Email or username is required");
-    }
-
-    return true;
+const registerSchema = z.object({
+  body: z.object({
+    name: z.string().trim().min(1, "Name is required"),
+    username: z
+      .string()
+      .trim()
+      .min(3, "Username must be at least 3 characters")
+      .max(30, "Username cannot exceed 30 characters")
+      .regex(/^[a-zA-Z0-9_]+$/, "Username may only contain letters, numbers, and underscores"),
+    email: z
+      .string()
+      .trim()
+      .min(1, "Email is required")
+      .email("Please enter a valid email address")
+      .toLowerCase(),
+    password: z.string().min(8, "Password must be at least 8 characters"),
   }),
+});
 
-  body("password").notEmpty().withMessage("Password is required"),
-];
+const loginSchema = z.object({
+  body: z
+    .object({
+      email: z
+        .string()
+        .trim()
+        .email("Please enter a valid email address")
+        .toLowerCase()
+        .optional()
+        .or(z.literal("")),
+      username: z
+        .string()
+        .trim()
+        .min(3, "Username must be at least 3 characters")
+        .max(30, "Username cannot exceed 30 characters")
+        .regex(/^[a-zA-Z0-9_]+$/, "Username may only contain letters, numbers, and underscores")
+        .optional()
+        .or(z.literal("")),
+      password: z.string().min(1, "Password is required"),
+    })
+    .refine(
+      (data) => (data.email && data.email.length > 0) || (data.username && data.username.length > 0),
+      {
+        message: "Email or username is required",
+        path: ["email"],
+      }
+    ),
+});
 
-router.post("/register", registerValidators, validate, registerUser);
-router.post("/login", loginValidators, validate, loginUser);
+router.post("/register", validate(registerSchema), registerUser);
+router.post("/login", validate(loginSchema), loginUser);
 router.post("/logout", logoutUser);
-router.get("/is-admin", protect, isUserAdmin); // Route to check if the user is an admin
+router.get("/is-admin", protect, isUserAdmin);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:resettoken", resetPassword);
 
