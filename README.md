@@ -48,7 +48,7 @@ npm run install-all
 
 ### Configure environment variables
 
-Create `server/.env` and set required values:
+Copy `server/.env.example` to `server/.env` and set required values:
 
 ```env
 MONGO_URI=your_mongodb_connection_string
@@ -64,6 +64,8 @@ Optional server variables:
 - `REDIS_URL` (enables distributed rate limiting)
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `FROM_NAME`, `FROM_EMAIL`
 - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`
+
+Copy `client/.env.example` to `client/.env` and update as needed.
 
 Optional client variable (`client/.env`):
 

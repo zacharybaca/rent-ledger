@@ -18,9 +18,6 @@ export default defineConfig({
       webmanifest: 'application/manifest+json',
     }
   },
-  ssr: {
-    noExternal: ['@clerk/react-router'],
-  },
   build: {
     outDir: 'dist',          // Where Render will serve from
     assetsDir: 'assets',     // Folder for static assets
