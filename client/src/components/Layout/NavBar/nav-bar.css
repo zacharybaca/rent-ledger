@@ -109,6 +109,7 @@
     right: 50%;
     transform: translateX(50%);
     width: min(220px, calc(100vw - 32px));
+    animation: none;
   }
 }
 
