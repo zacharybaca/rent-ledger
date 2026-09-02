@@ -1,7 +1,7 @@
 
 const RentLedgerIcon = ({
-  width = 4000,
-  height = 4000,
+  width = 1024,
+  height = 1024,
   fill = "#FBFBFA",
   ...props
 }) => {
