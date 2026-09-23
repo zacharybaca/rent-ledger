@@ -1,8 +1,40 @@
+/* Smooth transition background from the navy hero to the footer */
+.home-page {
+  background-color: #1e293b; /* Slate gray */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .page-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #10b981;
+  padding: 60px 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Neutralized Placeholder Card */
+.placeholder-card {
+  background-color: #f8fafc;
+  color: #1e293b;
   border-radius: 12px;
-  border: 2px solid black;
+  padding: 80px 40px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.placeholder-card h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #0f172a;
+}
+
+.placeholder-card p {
+  color: #64748b;
+  font-size: 1.1rem;
 }

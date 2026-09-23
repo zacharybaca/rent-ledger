@@ -31,7 +31,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {currentYear} RentLedger. All rights reserved.</p>
+        <p><i class="bi bi-c-circle"></i> {currentYear} RentLedger. All rights reserved.</p>
         <div className="footer-legal">
           <span>Built with the MERN Stack</span>
         </div>

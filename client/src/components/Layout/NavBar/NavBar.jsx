@@ -47,7 +47,7 @@ const NavBar = () => {
         <ul className="nav-links">
           <li>
             <Link to="/" className="nav-item">
-              Home
+              <i class="bi bi-house-door-fill"></i> Home
             </Link>
           </li>
 
@@ -55,12 +55,12 @@ const NavBar = () => {
             <>
               <li>
                 <Link to="/register" className="nav-item">
-                  Sign Up
+                  <i class="bi bi-person-plus-fill"></i> Sign Up
                 </Link>
               </li>
               <li>
                 <Link to="/login" className="nav-item">
-                  Login
+                  <i class="bi bi-box-arrow-in-right"></i> Login
                 </Link>
               </li>
             </>
@@ -118,7 +118,7 @@ const NavBar = () => {
                     Settings
                   </Link>
 
-                  {user.role === 'admin' && (
+                  {user.role === 'LandLordAdmin' && (
                     <Link
                       to="/admin/dashboard"
                       className="dropdown-item"

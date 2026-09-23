@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AppProvider } from './contexts/AppProvider.jsx';
 import { ToastContainer } from 'react-toastify';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 

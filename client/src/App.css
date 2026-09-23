@@ -89,3 +89,65 @@ body {
     font-size: 1.8rem;
   }
 }
+
+/* --- Add these below your existing .hero-accent class --- */
+
+/* Ensure the main hero text is off-white for contrast against navy */
+.hero-section h1 {
+  color: #f8fafc;
+}
+
+/* Hero Call-to-Action Buttons */
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+/* Solid Emerald Button */
+.btn-primary {
+  background-color: #10b981;
+  color: #0f172a;
+  border: 2px solid #10b981;
+}
+
+.btn-primary:hover {
+  background-color: #0d9468;
+  border-color: #0d9468;
+  color: #f8fafc;
+}
+
+/* Outlined Secondary Button */
+.btn-secondary {
+  background-color: transparent;
+  color: #f8fafc;
+  border: 2px solid #334155;
+}
+
+.btn-secondary:hover {
+  border-color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 480px) {
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 32px auto 0;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+  }
+}
